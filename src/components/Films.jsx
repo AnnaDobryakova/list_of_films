@@ -26,6 +26,10 @@ const Films = () => {
 
     const [newFilmTitle, setNewFilmTitle] = useState('')
 
+    const [editingId, setEditingId] = useState(null)
+    const [editingTitle, setEditingTitle] = useState('')
+    
+
     const deleteAllFilms = () => {
         const isConfirmed = confirm('Вы уверены, что хотите удалить все фильмы?')
 
@@ -40,7 +44,14 @@ const Films = () => {
         )
     }
 
-    const editFilm = (filmId, newTitle) => {
+    const startEditFilm = (filmId, title) => {
+        setEditingId(filmId)
+        setEditingTitle(title)
+    }
+
+    const saveEditedFilm = (filmId, newTitle) => {
+        if (newTitle.trim().length === 0) return
+
         setFilms(
             films.map((film) => {
                 if (film.id === filmId) {
@@ -50,6 +61,8 @@ const Films = () => {
                 return film
             })
         )
+        setEditingId(null)
+        setEditingTitle('')
     }
 
     const toggleFilmComplete = (filmId, isDone) => {
@@ -98,8 +111,12 @@ const Films = () => {
             <FilmsList 
                 films={films}
                 onDeleteFilmButtonClick={deleteFilm}
-                OnFilmCompleteChange={toggleFilmComplete}
-                onEditFilmButtonClick={editFilm}
+                onFilmCompleteChange={toggleFilmComplete}
+                onEditFilmButtonClick={startEditFilm}
+                onSaveFilmButtonClick={saveEditedFilm}
+                editingId={editingId}
+                editingTitle={editingTitle}
+                setEditingTitle={setEditingTitle}
             />
                 
         </div>

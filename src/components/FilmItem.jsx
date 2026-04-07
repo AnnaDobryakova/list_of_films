@@ -1,7 +1,19 @@
-import edit from '../assets/icons/edit.svg'
 
+import Button from "../components/Button"
 const FilmItem = (props) => {
-    const {className = '', id, title, isDone, onDeleteFilmButtonClick, OnFilmCompleteChange, onEditFilmButtonClick} = props
+    const {
+      className = '', 
+      id, 
+      title, 
+      isDone, 
+      onDeleteFilmButtonClick, 
+      onFilmCompleteChange, 
+      onEditFilmButtonClick,
+      onSaveFilmButtonClick,
+      editingId,
+      editingTitle,
+      setEditingTitle,
+    } = props
 
     return (
         <li className={`film-item ${className}`}>
@@ -10,19 +22,35 @@ const FilmItem = (props) => {
             id={id}
             type="checkbox"
             checked={isDone}
-            onChange={(e) => OnFilmCompleteChange(id, e.target.checked)}
+            disabled={editingId === id}
+            onChange={(e) => onFilmCompleteChange(id, e.target.checked)}
+            
           />
-          <label
-            className="film-item__label"
-            htmlFor={id}
-          >
-            {title}
-          </label>
-          <button
+
+            {editingId === id ? (
+                <>
+                  <input
+                      className="film-item__input"
+                      value={editingTitle}
+                      onChange={(event) =>                         
+                        setEditingTitle(event.target.value)}
+                  />
+                </>
+                ) : (
+                  <label className="film-item__label" htmlFor={id}>{title}</label> 
+              )
+            }
+          {editingId === id ? (
+            <button className="button" onClick={() => onSaveFilmButtonClick(id, editingTitle)}>
+              Сохранить
+            </button>
+          ) : (
+            <>
+             <button
             className="film-item__delete-button"
             aria-label="Редактировать фильм"
             title="Редактировать"
-            onClick={() => onEditFilmButtonClick(id)}
+            onClick={() => onEditFilmButtonClick(id, title)}
           >
             <svg 
               xmlns="http://www.w3.org/2000/svg"  
@@ -56,6 +84,10 @@ const FilmItem = (props) => {
               />
             </svg>
           </button>
+            </>
+          )
+            
+          }
         </li>
     )
 }

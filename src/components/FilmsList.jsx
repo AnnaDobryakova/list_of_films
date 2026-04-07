@@ -4,13 +4,17 @@ const FilmsList = (props) => {
     const {
         films = [],
         onDeleteFilmButtonClick,
-        OnFilmCompleteChange,
+        onFilmCompleteChange,
         onEditFilmButtonClick,
+        onSaveFilmButtonClick,
+        editingId,
+        editingTitle,
+        setEditingTitle
     } = props
 
     const hasFilms = true
 
-    if(!hasFilms) return <div className="film__empty-message"></div>
+    if(!hasFilms) return <div className="film__empty-message">Список фильмов пуст</div>
 
     return (
         <ul className="film__list">
@@ -22,8 +26,12 @@ const FilmsList = (props) => {
                     title={film.title}
                     isDone={film.isDone}
                     onDeleteFilmButtonClick={onDeleteFilmButtonClick}
-                    OnFilmCompleteChange={OnFilmCompleteChange}
+                    onFilmCompleteChange={onFilmCompleteChange}
                     onEditFilmButtonClick={onEditFilmButtonClick}
+                    onSaveFilmButtonClick={onSaveFilmButtonClick}
+                    editingId={editingId}
+                    editingTitle={editingTitle}
+                    setEditingTitle={setEditingTitle}
                 />
             ))}
         </ul>

@@ -5,6 +5,9 @@
   padding-left: 10px;
   border: var(--border);
   border-radius: var(--border-radius);
+  align-items: center;
+  gap: 8px;
+  width: 100%;
 
   &:hover {
     background-color: #d5f7ff;
@@ -66,6 +69,8 @@
 .film-item__label {
   width: 100%;
   pointer-events: none;
+  flex: 1;
+  min-width: 0;
 }
 
 .film-item__delete-button {
@@ -118,4 +123,18 @@
   &:active {
     scale: 1.05;
   }
+}
+
+.film-item__input {
+  flex: 1;
+  min-width: 0;
+  max-width: 100%;
+  width: 100%;
+  border: 1px solid white;
+  border-radius: 6px;
+  padding: 4px 8px;
+}
+
+.film-item button {
+  flex-shrink: 0;
 }
