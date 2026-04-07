@@ -2,7 +2,8 @@ import Field from "./Field"
 
 const SearchFilmForm = (props) => {
   const {
-    onSearchInput,
+    searchQuery,
+    setSearchQuery,
   } = props
 
     return (
@@ -15,7 +16,8 @@ const SearchFilmForm = (props) => {
             label="Найти фильм"
             id="search-film"
             type="search"
-            onInput={(event) => onSearchInput(event.target.value)}
+            value={searchQuery}
+            onInput={(event) => setSearchQuery(event.target.value)}
           />
         </form>
     )

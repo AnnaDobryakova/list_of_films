@@ -1,10 +1,10 @@
-import Todo from "./components/Films"
+import Films from "./components/Films"
 
 function App() {
 
   return (
     <>
-      <Todo />
+      <Films />
     </>
   )
 }

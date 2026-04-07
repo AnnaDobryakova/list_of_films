@@ -2,33 +2,41 @@ import AddFilmForm from "./AddFilmForm"
 import SearchFilmForm from "./SearchFilmForm"
 import FilmInfo from "./FilmInfo"
 import FilmsList from "./FilmsList"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
 const Films = () => {
 
-    const [films, setFilms] = useState([
-        {
-            id: 1,
-            title: 'Аватар 2: Путь воды',
-            isDone: false
-        },
-        {
-            id: 2,
-            title: 'Интерстеллар',
-            isDone: true
-        },
-        {
-            id: 3,
-            title: 'Один дома',
-            isDone: false
-        },
-    ])
+    const [films, setFilms] = useState(() => {
+        const savedFilms = localStorage.getItem('films')
+        if (savedFilms) {
+            return JSON.parse(savedFilms)
+        } 
+
+        return [
+            {
+        id: 1,
+        title: 'Аватар 2: Путь воды',
+        isDone: false
+    },
+    {
+        id: 2,
+        title: 'Интерстеллар',
+        isDone: true
+    },
+    {
+        id: 3,
+        title: 'Один дома',
+        isDone: false
+    },
+        ]
+    })
 
     const [newFilmTitle, setNewFilmTitle] = useState('')
 
     const [editingId, setEditingId] = useState(null)
     const [editingTitle, setEditingTitle] = useState('')
     
+    const [searchQuery, setSearchQuery] = useState('')
 
     const deleteAllFilms = () => {
         const isConfirmed = confirm('Вы уверены, что хотите удалить все фильмы?')
@@ -77,9 +85,6 @@ const Films = () => {
         )
     }
 
-    const filterFilms = (query) => {
-        console.log(`Поиск фильмов: ${query}`)
-    }
 
     const addFilm = () => {
         if (newFilmTitle.trim().length > 0) {
@@ -91,8 +96,18 @@ const Films = () => {
 
             setFilms([...films, newFilm])
             setNewFilmTitle('')
+            setSearchQuery('')
         }
     }
+
+    useEffect(() => {
+        localStorage.setItem('films', JSON.stringify(films))
+    }, [films])
+
+    const clearSearchQuery = searchQuery.trim().toLocaleLowerCase()
+    const filteredFilms = clearSearchQuery.length > 0 
+        ? films.filter(({title}) => title.toLowerCase().includes(clearSearchQuery))
+        : null
 
     return (
         <div className="film">
@@ -102,7 +117,10 @@ const Films = () => {
                 newFilmTitle={newFilmTitle}
                 setNewFilmTitle={setNewFilmTitle}
             />
-            <SearchFilmForm onSearchInput={filterFilms}/>
+            <SearchFilmForm 
+                searchQuery={searchQuery}
+                setSearchQuery={setSearchQuery}
+            />
             <FilmInfo 
                 total={films.length} 
                 done={films.filter(({isDone}) => isDone).length}
@@ -110,6 +128,7 @@ const Films = () => {
             />
             <FilmsList 
                 films={films}
+                filteredFilms={filteredFilms}
                 onDeleteFilmButtonClick={deleteFilm}
                 onFilmCompleteChange={toggleFilmComplete}
                 onEditFilmButtonClick={startEditFilm}
