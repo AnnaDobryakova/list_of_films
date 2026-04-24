@@ -3,6 +3,8 @@ import SearchFilmForm from "./SearchFilmForm"
 import FilmInfo from "./FilmInfo"
 import FilmsList from "./FilmsList"
 import { useState, useEffect } from "react"
+import { Link } from "react-router-dom"
+import Button from "../components/Button"
 
 const Films = () => {
 
@@ -137,6 +139,12 @@ const Films = () => {
                 editingTitle={editingTitle}
                 setEditingTitle={setEditingTitle}
             />
+
+
+            <Link to="/popular" className="film__button-popular">
+                <Button>Популярные фильмы</Button>
+            </Link>
+
                 
         </div>
     )
