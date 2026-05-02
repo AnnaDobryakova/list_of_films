@@ -37,7 +37,6 @@ const Films = () => {
 
     const [editingId, setEditingId] = useState(null)
     const [editingTitle, setEditingTitle] = useState('')
-    
     const [searchQuery, setSearchQuery] = useState('')
 
     const deleteAllFilms = () => {
